@@ -7,13 +7,14 @@ import useSettings from "./hooks/useSettings";
 import useTimer from "./hooks/useTimer";
 
 function App() {
-  const { isStarted, minutes, seconds, active, setActive } = useTimer();
+  const { isStarted, minutes, seconds, activeTimer, setActiveTimer } =
+    useTimer();
   const { workTime } = useSettings();
   const favicon = document.getElementById("favicon") as HTMLLinkElement;
 
   useEffect(() => {
-    setActive({
-      active: "work",
+    setActiveTimer({
+      activeTimer: "work",
       currentTime: workTime,
       minutes: workTime,
     });
@@ -21,7 +22,7 @@ function App() {
   }, []);
 
   if (isStarted) {
-    if (active === "work") {
+    if (activeTimer === "work") {
       document.title = `${minutes}:${
         seconds < 10 ? `0${seconds}` : seconds
       } - Time to focus`;
@@ -35,8 +36,10 @@ function App() {
     favicon.href = "./assets/favicon-16x16.png";
   }
 
-  if (active === "break") favicon.href = "./assets/favicon-green-16x16.png";
-  if (active === "longBreak") favicon.href = "./assets/favicon-blue-16x16.png";
+  if (activeTimer === "break")
+    favicon.href = "./assets/favicon-green-16x16.png";
+  if (activeTimer === "longBreak")
+    favicon.href = "./assets/favicon-blue-16x16.png";
 
   return (
     <Layout>

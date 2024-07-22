@@ -7,7 +7,7 @@ type StateProps = {
   seconds: number;
   currentTime: number;
   currentBreak: number;
-  active: "work" | "break" | "longBreak";
+  activeTimer: "work" | "break" | "longBreak";
 };
 
 // Type for the context value
@@ -15,8 +15,8 @@ type TimerContextProps = StateProps & {
   timer: () => void;
   start: () => void;
   reset: () => void;
-  setActive: (value: {
-    active: "work" | "break" | "longBreak";
+  setActiveTimer: (value: {
+    activeTimer: "work" | "break" | "longBreak";
     currentTime?: number;
     minutes?: number;
     isStarted?: boolean;
@@ -32,7 +32,7 @@ const initialState: StateProps = {
   minutes: 25,
   seconds: 0,
   currentBreak: 1,
-  active: "work",
+  activeTimer: "work",
 };
 
 const TimerContext = createContext<TimerContextProps>({
@@ -40,7 +40,7 @@ const TimerContext = createContext<TimerContextProps>({
   timer: () => {},
   start: () => {},
   reset: () => {},
-  setActive: () => {},
+  setActiveTimer: () => {},
   setTime: () => {},
   setBreak: () => {},
 });
@@ -51,9 +51,9 @@ type ActionProps =
   | { type: "reset" }
   | { type: "timer" }
   | {
-      type: "setActive";
+      type: "setActiveTimer";
       payload: {
-        active: "work" | "break" | "longBreak";
+        activeTimer: "work" | "break" | "longBreak";
         currentTime?: number;
         minutes?: number;
         isStarted?: boolean;
@@ -87,7 +87,7 @@ function reducer(state: StateProps, action: ActionProps): StateProps {
 
       return state;
 
-    case "setActive":
+    case "setActiveTimer":
       return {
         ...state,
         ...action.payload,
@@ -118,19 +118,19 @@ type TimerProviderProps = {
 
 function TimerProvider({ children }: TimerProviderProps) {
   const [
-    { isStarted, minutes, seconds, currentTime, active, currentBreak },
+    { isStarted, minutes, seconds, currentTime, activeTimer, currentBreak },
     dispatch,
   ] = useReducer(reducer, initialState);
 
   const timer = () => dispatch({ type: "timer" });
   const start = () => dispatch({ type: "start" });
   const reset = () => dispatch({ type: "reset" });
-  const setActive = (value: {
-    active: "work" | "break" | "longBreak";
+  const setActiveTimer = (value: {
+    activeTimer: "work" | "break" | "longBreak";
     currentTime?: number;
     minutes?: number;
     isStarted?: boolean;
-  }) => dispatch({ type: "setActive", payload: value });
+  }) => dispatch({ type: "setActiveTimer", payload: value });
   const setTime = (value: number) =>
     dispatch({ type: "setTime", payload: value });
   const setBreak = (value?: number) =>
@@ -146,10 +146,10 @@ function TimerProvider({ children }: TimerProviderProps) {
         timer,
         start,
         reset,
-        setActive,
+        setActiveTimer,
         setTime,
         currentBreak,
-        active,
+        activeTimer,
         setBreak,
       }}
     >
