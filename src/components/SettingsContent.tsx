@@ -16,14 +16,14 @@ export default function SettingsContent() {
     handleLongBreakTime,
   } = useSettings();
 
-  const { setTime, active } = useTimer();
+  const { setTime, activeTimer } = useTimer();
 
   const [disabled, setDisabled] = useState(false);
 
   function handleSubmit() {
-    if (active === "break") setTime(breakTime);
-    if (active === "longBreak") setTime(longBreakTime);
-    if (active === "work") setTime(workTime);
+    if (activeTimer === "break") setTime(breakTime);
+    if (activeTimer === "longBreak") setTime(longBreakTime);
+    if (activeTimer === "work") setTime(workTime);
   }
 
   return (

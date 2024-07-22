@@ -15,8 +15,8 @@ const Timer = () => {
     timer,
     reset,
     setTime,
-    active,
-    setActive,
+    activeTimer,
+    setActiveTimer,
     setBreak,
     currentBreak,
   } = useTimer();
@@ -29,29 +29,29 @@ const Timer = () => {
     const interval = setInterval(() => {
       if (isStarted) {
         timer();
-        if (active === "work" && minutes === 0 && seconds === 0) {
+        if (activeTimer === "work" && minutes === 0 && seconds === 0) {
           if (breakCount === 1) {
-            setActive({ active: "longBreak" });
+            setActiveTimer({ activeTimer: "longBreak" });
             setTime(longBreakTime);
           }
           if (breakCount === currentBreak) {
-            setActive({ active: "longBreak" });
+            setActiveTimer({ activeTimer: "longBreak" });
             setTime(longBreakTime);
             setBreak(1);
           } else {
             setTime(breakTime);
-            setActive({ active: "break" });
+            setActiveTimer({ activeTimer: "break" });
             setBreak();
           }
         }
-        if (active === "break" && minutes === 0 && seconds === 0) {
+        if (activeTimer === "break" && minutes === 0 && seconds === 0) {
           setTime(workTime);
-          setActive({ active: "work" });
+          setActiveTimer({ activeTimer: "work" });
         }
 
-        if (active === "longBreak" && minutes === 0 && seconds === 0) {
+        if (activeTimer === "longBreak" && minutes === 0 && seconds === 0) {
           setTime(workTime);
-          setActive({ active: "work" });
+          setActiveTimer({ activeTimer: "work" });
         }
 
         if (minutes === 0 && seconds === 0) {
@@ -64,11 +64,11 @@ const Timer = () => {
     isStarted,
     timer,
     breakTime,
-    active,
+    activeTimer,
     setTime,
     minutes,
     seconds,
-    setActive,
+    setActiveTimer,
     workTime,
     breakCount,
     currentBreak,
@@ -78,21 +78,21 @@ const Timer = () => {
   ]);
 
   function handleNextBtn() {
-    if (active === "work") {
+    if (activeTimer === "work") {
       if (breakCount === currentBreak) {
-        setActive({ active: "longBreak" });
+        setActiveTimer({ activeTimer: "longBreak" });
         setTime(longBreakTime);
         setBreak(1);
       } else {
         setTime(breakTime);
-        setActive({ active: "break" });
+        setActiveTimer({ activeTimer: "break" });
         setBreak();
       }
     }
 
-    if (active === "break" || active === "longBreak") {
+    if (activeTimer === "break" || activeTimer === "longBreak") {
       setTime(workTime);
-      setActive({ active: "work" });
+      setActiveTimer({ activeTimer: "work" });
     }
   }
 
